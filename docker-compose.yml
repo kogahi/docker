@@ -1,18 +1,22 @@
 version: '3'
 services:
   db:
-    image: mysql:5.7
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile
+    restart: always
+    hostname: db
     environment:
-      MYSQL_DATABASE: mysql
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_DATABASE: mysql
+      MYSQL_PASSWORD: password
       TZ: "Asia/Tokyo"
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql/data:/var/lib/mysql  
-      - ./mysql/init:/docker-entrypoint-initdb.d  
-      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf  
+      - './db:/config' 
+    container_name: db 
   nodejs:
     image: node:12
     tty: true
