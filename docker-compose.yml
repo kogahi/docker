@@ -25,4 +25,4 @@ services:
     volumes:
       - ./app:/app
     working_dir: "/app"
-    command: node /app/app.js
+    command: bash -c "npm i && node /app/app.js"
