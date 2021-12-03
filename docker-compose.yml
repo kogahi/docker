@@ -1,0 +1,30 @@
+version: '3'
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile
+    restart: always
+    hostname: db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_DATABASE: mysql
+      MYSQL_PASSWORD: password
+      TZ: "Asia/Tokyo"
+    ports:
+      - "3306:3306"
+    volumes:
+      - './db:/config' 
+    container_name: db 
+  nodejs:
+    image: node:12
+    tty: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app
+    working_dir: "/app"
+    command: >
+      sh -c "npm install && 
+             npm run dev"
